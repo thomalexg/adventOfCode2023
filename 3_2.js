@@ -39,18 +39,22 @@ const getSum = () => {
                 indices.push(i);
             }
         }
+        const numbersFoundObj = {};
         // 2. if at least one * in line, check if numbers are touching it 
         if (indices.length) {
             // loop over all indices and get the numbers touching it
             indices.forEach(idx => {
                 // store found number indices and lineIndex in obj
-                const numbersFoundObj = {};
 
                 // check in same line
                 // console.log("check for numbers", lineIndex)
                 if (idx > 0 && !isNaN(Number(line[idx-1]))) {
                     // console.log("number to the left", line[idx-1])
-                    numbersFoundObj[lineIndex] = [idx-1]
+                    if (!numbersFoundObj[lineIndex]) {
+                        numbersFoundObj[lineIndex] = [idx-1];
+                    } else {
+                        numbersFoundObj[lineIndex] = [idx-1]
+                    }
                 }
                 if (idx > 0 && !isNaN(Number(line[idx+1]))) {
                     // console.log("number to the right", line[idx+1])
@@ -141,11 +145,11 @@ const getSum = () => {
                     }
                 })
                 // console.log("numbers found 2", numbersFoundObj);
-                if (Object.keys(numbersFoundObj).length > 1) {
-                    // console.log("star in line", lineIndex + 1 + " has at least 2 numbers so it shoudl be considered")
-                    result += getProduct(numbersFoundObj, lines, lineIndex + 1)
-                }
             })
+        }
+        if (Object.keys(numbersFoundObj).length > 1) {
+            // console.log("star in line", lineIndex + 1 + " has at least 2 numbers so it shoudl be considered")
+            result += getProduct(numbersFoundObj, lines, lineIndex + 1)
         }
         
     })
