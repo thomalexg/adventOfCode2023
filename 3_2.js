@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const data = fs.readFileSync('test3.txt', { encoding: 'utf8', flag: 'r' });
+const data = fs.readFileSync('3.txt', { encoding: 'utf8', flag: 'r' });
 
 let result = 0;
 
@@ -10,7 +10,6 @@ const getProduct = (obj, lines, lineIndex) => {
     // console.log('getProduct lines', lines);
     console.log('lineIndex', lineIndex);
     let numArr = [];
-    
 
     Object.keys(obj).forEach(key => {
         let numberStr = '';
@@ -32,14 +31,8 @@ const getProduct = (obj, lines, lineIndex) => {
 
 const getSum = () => {
     let lines = data.split('\n')
-    // lines[0].split("").forEach((val, index) => {
-    //     console.log("index:", index + 'val: ' + val)
-    // })
     lines.forEach((line, lineIndex) => {
         // 1. get all indices of * in current line
-
-        let numbersFoundInLineObj = {}
-
         const indices = [];
         for (let i = 0; i < line.length; i++) {
             if (line[i] === '*') {
@@ -57,11 +50,7 @@ const getSum = () => {
                 // console.log("check for numbers", lineIndex)
                 if (idx > 0 && !isNaN(Number(line[idx-1]))) {
                     // console.log("number to the left", line[idx-1])
-                    if (!numbersFoundObj[lineIndex]) {
-                        numbersFoundObj[lineIndex] = [idx-1];
-                    } else {
-                        numbersFoundObj[lineIndex] = [idx-1]
-                    }
+                    numbersFoundObj[lineIndex] = [idx-1]
                 }
                 if (idx > 0 && !isNaN(Number(line[idx+1]))) {
                     // console.log("number to the right", line[idx+1])
@@ -76,8 +65,7 @@ const getSum = () => {
                 // check previous and next line
                 // check if previous line exists
                 if (lineIndex > 0) {
-                    console.log("previous line exists", lineIndex + 1)
-                    console.log("index", idx)
+                    // console.log("previous line exists", lineIndex)
                     // check previous line diagonal left
                     if (!isNaN(Number(lines[lineIndex-1][idx-1]))) {
                         if (!numbersFoundObj[lineIndex-1]) {
@@ -88,7 +76,6 @@ const getSum = () => {
                     }
 
                     // check previous line above
-                    console.log("above prev line: ", lines[lineIndex-1][idx])
                     if (!isNaN(Number(lines[lineIndex-1][idx]))) {
                         if (!numbersFoundObj[lineIndex-1]) {
                             numbersFoundObj[lineIndex-1] = [idx];
@@ -137,7 +124,7 @@ const getSum = () => {
                     }
 
                 }
-                console.log("numbers found 1", numbersFoundObj);
+                // console.log("numbers found 1", numbersFoundObj);
                 // if (Object.keysnumbersFoundObj(numbersFoundObj).length && Object.keysnumbersFoundObj(numbersFoundObj).length === 1 && )
                 Object.keys(numbersFoundObj).forEach(key => {
                     if (numbersFoundObj[key].length > 1) {
@@ -153,26 +140,12 @@ const getSum = () => {
                         }
                     }
                 })
-                console.log("numbers found 2", numbersFoundObj);
-                if (Object.keys(numbersFoundInLineObj).length) {
-                    Object.keys(numbersFoundObj).forEach(key => {
-                        // If the key already exists in obj1, concatenate the arrays
-                        // Otherwise, add the key and value to the merged object
-                        if (numbersFoundInLineObj[key]) {
-                            numbersFoundInLineObj[key] = numbersFoundInLineObj[key].concat(numbersFoundObj[key]);
-                        } else {
-                            numbersFoundInLineObj[key] = numbersFoundObj[key];
-                        }
-                    });
-                } else {
-                    numbersFoundInLineObj = numbersFoundObj
+                // console.log("numbers found 2", numbersFoundObj);
+                if (Object.keys(numbersFoundObj).length > 1) {
+                    // console.log("star in line", lineIndex + 1 + " has at least 2 numbers so it shoudl be considered")
+                    result += getProduct(numbersFoundObj, lines, lineIndex + 1)
                 }
             })
-        }
-        console.log("numbers found 3", numbersFoundInLineObj)
-        if (Object.keys(numbersFoundInLineObj).length > 1) {
-            // console.log("star in line", lineIndex + 1 + " has at least 2 numbers so it shoudl be considered")
-            result += getProduct(numbersFoundInLineObj, lines, lineIndex + 1)
         }
         
     })
