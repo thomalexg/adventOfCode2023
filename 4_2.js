@@ -29,12 +29,12 @@ const recursive = (index, isRecursive = true) => {
                 count++;
             }
         })
+        countObj[index+1] = count;
     } else {
         // console.log("already counted", countObj)
         count = countObj[index+1]
     }
     // console.log("count ", index+1 + ': ' + count )
-    countObj[index+1] = count;
     if (!isRecursive) {
 
         if (winningObj[index+1]) {
